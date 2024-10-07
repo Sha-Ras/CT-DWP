@@ -26,10 +26,26 @@ public class TicketServiceImpl implements TicketService {
         
         int totalAmount = 50;
         int totalSeatsToReserve = 2;
+        boolean hasAdult = false;
+        
+        
+        for(TicketTypeRequest request : ticketTypeRequests) {
+            if(request.getTicketType() == TicketTypeRequest.Type.ADULT){
+                hasAdult = true;
+            }
+        }
+        
+        validateAdultCondition(hasAdult);
         
         ticketPaymentService.makePayment(accountId, totalAmount);
         seatReservationService.reserveSeat(accountId, totalSeatsToReserve);
         
+    }
+    
+    private void validateAdultCondition(boolean hasAdult) {
+        if(!hasAdult){
+            throw new InvalidPurchaseException("At least one adult ticket is required");
+        }
     }
     
     private void validateAccountAndRequest(Long accountId, TicketTypeRequest[] ticketTypeRequests) {
