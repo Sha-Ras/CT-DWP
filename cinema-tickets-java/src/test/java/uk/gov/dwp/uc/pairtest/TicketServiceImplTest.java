@@ -60,5 +60,30 @@ import static org.mockito.Mockito.verify;
 			 ticketService.purchaseTickets(0L, adultTicket);
 		 });
 	 }
+	 
+	 @Test
+	 void testNullAccountIdShouldThrowsException(){
+		 
+		 assertThrows(InvalidPurchaseException.class, () -> {
+			 ticketService.purchaseTickets(null, adultTicket);
+		 });
+	 }
+	 
+	 @Test
+	 void testWhenAccountIdIsLessThanZeroShouldThrowsException(){
+		 
+		 assertThrows(InvalidPurchaseException.class, () -> {
+			 ticketService.purchaseTickets(-1L, adultTicket);
+		 });
+	 }
+	 
+	 @Test
+	 void testWhenTicketTypeRequestsIsNullShouldThrowsException(){
+		 
+		 assertThrows(InvalidPurchaseException.class, () -> {
+			 ticketService.purchaseTickets(1L, null);
+		 });
+	 }
+	 
 	
  }
