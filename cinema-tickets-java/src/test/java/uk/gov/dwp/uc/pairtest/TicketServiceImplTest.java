@@ -92,5 +92,13 @@ import static org.mockito.Mockito.verify;
 		 });
 	 }
 	 
+	 @Test
+	 void testPurchaseThatExceedsMaxTicketsShouldThrowsException(){
+		 TicketTypeRequest twentyFourChildTickets = new TicketTypeRequest(TicketTypeRequest.Type.CHILD, 24);
+		 assertThrows(InvalidPurchaseException.class, () -> {
+			 ticketService.purchaseTickets(1L, adultTicket, twentyFourChildTickets );
+		 });
+	 }
+	 
 	
  }
