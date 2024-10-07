@@ -1,17 +1,24 @@
 package uk.gov.dwp.uc.pairtest;
 
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 import uk.gov.dwp.uc.pairtest.domain.TicketTypeRequest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TicketServiceImplTest {
+	
+	private TicketTypeRequest adultTicket, childTicket, infantTicket;
+	
+	@BeforeEach
+	void setUp(){
+		adultTicket = new TicketTypeRequest(TicketTypeRequest.Type.ADULT, 2);
+		childTicket = new TicketTypeRequest(TicketTypeRequest.Type.CHILD, 3);
+		infantTicket = new TicketTypeRequest(TicketTypeRequest.Type.INFANT, 1);
+	}
 
 	@Test
 	public void testAllTicketTypeRequest(){
-		TicketTypeRequest  adultTicket = new TicketTypeRequest(TicketTypeRequest.Type.ADULT, 2);
-		TicketTypeRequest  childTicket = new TicketTypeRequest(TicketTypeRequest.Type.CHILD, 3);
-		TicketTypeRequest infantTicket = new TicketTypeRequest(TicketTypeRequest.Type.INFANT, 1);
 		
 		assertEquals(TicketTypeRequest.Type.ADULT, adultTicket.getTicketType(), "Ticket type should be ADULT");
 		assertEquals(2, adultTicket.getNoOfTickets(), "Number of tickets should be 2");
