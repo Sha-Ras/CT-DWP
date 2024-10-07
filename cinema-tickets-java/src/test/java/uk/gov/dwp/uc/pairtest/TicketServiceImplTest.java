@@ -14,11 +14,19 @@ import static org.mockito.Mockito.verify;
 	
 	private TicketTypeRequest adultTicket, childTicket, infantTicket;
 	
+	 private TicketPaymentService ticketPaymentService;
+	 private SeatReservationService seatReservationService;
+	 private TicketService ticketService;
+	 
 	@BeforeEach
 	void setUp(){
 		adultTicket = new TicketTypeRequest(TicketTypeRequest.Type.ADULT, 2);
 		childTicket = new TicketTypeRequest(TicketTypeRequest.Type.CHILD, 3);
 		infantTicket = new TicketTypeRequest(TicketTypeRequest.Type.INFANT, 1);
+		
+		 ticketPaymentService = mock(TicketPaymentService.class);
+		 seatReservationService = mock(SeatReservationService.class);
+		 ticketService = new TicketServiceImpl(ticketPaymentService, seatReservationService);
 	}
 
 	@Test
@@ -37,13 +45,11 @@ import static org.mockito.Mockito.verify;
 	
 	@Test
 	 void testHardCodedAdultTicketPurchase(){
-		TicketPaymentService ticketPaymentService = mock(TicketPaymentService.class);
-		SeatReservationService seatReservationService = mock(SeatReservationService.class);
-		TicketService ticketService = new TicketServiceImpl(ticketPaymentService, seatReservationService);
 		
 		ticketService.purchaseTickets(1L, adultTicket);
 		
 		verify(ticketPaymentService).makePayment(1L, 50);
 		verify(seatReservationService).reserveSeat(1L, 2);
 	}
-}
+	
+ }
