@@ -33,7 +33,9 @@ public class TicketServiceImpl implements TicketService {
     }
     
     private void validateAccountAndRequest(Long accountId, TicketTypeRequest[] ticketTypeRequests) {
-        throw new InvalidPurchaseException("Invalid request");
+        if (accountId == null || ticketTypeRequests == null || ticketTypeRequests.length == 0 || accountId <= 0) {
+            throw new InvalidPurchaseException("Invalid request");
+        }
     }
     
     
