@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import thirdparty.paymentgateway.TicketPaymentService;
 import thirdparty.seatbooking.SeatReservationService;
 import uk.gov.dwp.uc.pairtest.domain.TicketTypeRequest;
+import uk.gov.dwp.uc.pairtest.exception.InvalidPurchaseException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -51,5 +52,13 @@ import static org.mockito.Mockito.verify;
 		verify(ticketPaymentService).makePayment(1L, 50);
 		verify(seatReservationService).reserveSeat(1L, 2);
 	}
+	 
+	 @Test
+	 void testAdultTicketPurchaseWithValidationToThrowsException(){
+		
+		 assertThrows(InvalidPurchaseException.class, () -> {
+			 ticketService.purchaseTickets(0L, adultTicket);
+		 });
+	 }
 	
  }
