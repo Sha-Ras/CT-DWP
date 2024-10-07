@@ -18,7 +18,7 @@ public class TicketServiceImplTest {
 	}
 
 	@Test
-	public void testAllTicketTypeRequest(){
+	public void testAllTicketTypeRequests(){
 		
 		assertEquals(TicketTypeRequest.Type.ADULT, adultTicket.getTicketType(), "Ticket type should be ADULT");
 		assertEquals(2, adultTicket.getNoOfTickets(), "Number of tickets should be 2");
