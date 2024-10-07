@@ -85,5 +85,12 @@ import static org.mockito.Mockito.verify;
 		 });
 	 }
 	 
+	 @Test
+	  void testPurchaseWithoutAdultTicketThrowsException(){
+		 assertThrows(InvalidPurchaseException.class, () -> {
+			 ticketService.purchaseTickets(1L, childTicket, infantTicket);
+		 });
+	 }
+	 
 	
  }
