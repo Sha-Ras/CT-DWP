@@ -2,9 +2,13 @@ package uk.gov.dwp.uc.pairtest;
 
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
+import thirdparty.paymentgateway.TicketPaymentService;
+import thirdparty.seatbooking.SeatReservationService;
 import uk.gov.dwp.uc.pairtest.domain.TicketTypeRequest;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class TicketServiceImplTest {
 	
@@ -29,5 +33,17 @@ public class TicketServiceImplTest {
 		assertEquals(TicketTypeRequest.Type.INFANT, infantTicket.getTicketType(), "Ticket type should be INFANT");
 		assertEquals(1, infantTicket.getNoOfTickets(), "Number of tickets should be 1");
 		
+	}
+	
+	@Test
+	public void testHardCodedAdultTicketPurchase(){
+		TicketPaymentService ticketPaymentService = mock(TicketPaymentService.class);
+		SeatReservationService seatReservationService = mock(SeatReservationService.class);
+		TicketService ticketService = mock(TicketService.class);
+		
+		ticketService.purchaseTickets(1L, adultTicket);
+		
+		verify(ticketPaymentService).makePayment(1L, 50);
+		verify(seatReservationService).reserveSeat(1L, 2);
 	}
 }
