@@ -7,6 +7,9 @@ import uk.gov.dwp.uc.pairtest.exception.InvalidPurchaseException;
 
 public class TicketServiceImpl implements TicketService {
     
+    public static final int ADULT_TICKET_PRICE = 25;
+    public static final int MAX = 25;
+    public static final int CHILD_TICKET_PRICE = 15;
     private final TicketPaymentService ticketPaymentService;
     private final SeatReservationService seatReservationService;
     
@@ -50,9 +53,9 @@ public class TicketServiceImpl implements TicketService {
         int ticket = request.getNoOfTickets();
         switch (request.getTicketType()){
             case ADULT:
-                return ticket * 25;
+                return ticket * ADULT_TICKET_PRICE;
             case CHILD:
-                return ticket * 15;
+                return ticket * CHILD_TICKET_PRICE;
             case INFANT:
                 return 0;
             default:
@@ -78,7 +81,7 @@ public class TicketServiceImpl implements TicketService {
         for(TicketTypeRequest request : ticketTypeRequests) {
             totalTickets += request.getNoOfTickets();
         }
-        if(totalTickets > 25){
+        if(totalTickets > MAX){
             throw new InvalidPurchaseException("Too many tickets! Cannot purchase more than 25 tickets");
         }
     }
