@@ -100,5 +100,10 @@ import static org.mockito.Mockito.verify;
 		 });
 	 }
 	 
+	 @Test
+	 void testSeatsReservedForValidPurchaseWithAdultAndChildTickets(){
+		 ticketService.purchaseTickets(1L, adultTicket, childTicket);
+		 verify(seatReservationService).reserveSeat(1L, 5);
+	 }
 	
  }
