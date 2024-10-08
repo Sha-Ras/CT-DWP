@@ -32,19 +32,31 @@ public class TicketServiceImpl implements TicketService {
         for(TicketTypeRequest request : ticketTypeRequests) {
             if(request.getTicketType() == TicketTypeRequest.Type.ADULT){
                 hasAdult = true;
+                break;
             }
         }
         
         validateAdultCondition(hasAdult);
+        validateMaxTickets(ticketTypeRequests);
         
         ticketPaymentService.makePayment(accountId, totalAmount);
         seatReservationService.reserveSeat(accountId, totalSeatsToReserve);
         
     }
     
+    private void validateMaxTickets(TicketTypeRequest[] ticketTypeRequests) {
+        int totalTickets = 0;
+        for(TicketTypeRequest request : ticketTypeRequests) {
+            totalTickets += request.getNoOfTickets();
+        }
+        if(totalTickets > 25){
+            throw new InvalidPurchaseException("Too many tickets! Cannot purchase more than 25 tickets");
+        }
+    }
+    
     private void validateAdultCondition(boolean hasAdult) {
         if(!hasAdult){
-            throw new InvalidPurchaseException("At least one adult ticket is required");
+            throw new InvalidPurchaseException("Child or Infant tickets must be accompanied by an Adult");
         }
     }
     
