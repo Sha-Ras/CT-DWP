@@ -105,5 +105,11 @@ import static org.mockito.Mockito.verify;
 		 ticketService.purchaseTickets(1L, adultTicket, childTicket);
 		 verify(seatReservationService).reserveSeat(1L, 5);
 	 }
+	 
+	 @Test
+	 void testTotalAmountForValidPurchaseWithAdultAndChildTickets(){
+		 ticketService.purchaseTickets(1L, adultTicket, childTicket);
+		 verify(ticketPaymentService).makePayment(1L, 95);
+	 }
 	
  }
