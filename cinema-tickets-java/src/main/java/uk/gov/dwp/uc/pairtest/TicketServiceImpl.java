@@ -25,14 +25,15 @@ public class TicketServiceImpl implements TicketService {
         validateAccountAndRequest(accountId, ticketTypeRequests);
         
         int totalAmount = 50;
-        int totalSeatsToReserve = 2;
+        int totalSeatsToReserve = 0;
         boolean hasAdult = false;
         
         
         for(TicketTypeRequest request : ticketTypeRequests) {
+            totalSeatsToReserve += calculateSeatsForRequest(request);
+            
             if(request.getTicketType() == TicketTypeRequest.Type.ADULT){
                 hasAdult = true;
-                break;
             }
         }
         
@@ -43,6 +44,19 @@ public class TicketServiceImpl implements TicketService {
         seatReservationService.reserveSeat(accountId, totalSeatsToReserve);
         
     }
+    
+    private int calculateSeatsForRequest(TicketTypeRequest request) {
+        int tickets = request.getNoOfTickets();
+        switch (request.getTicketType()){
+            case ADULT:
+            case CHILD:
+                return tickets;
+            case INFANT:
+                return 0;
+            default:
+                throw new IllegalArgumentException("Invalid type request");
+        }
+	}
     
     private void validateMaxTickets(TicketTypeRequest[] ticketTypeRequests) {
         int totalTickets = 0;
