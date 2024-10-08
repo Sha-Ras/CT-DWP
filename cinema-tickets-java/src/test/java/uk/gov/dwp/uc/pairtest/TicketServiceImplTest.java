@@ -111,5 +111,39 @@ import static org.mockito.Mockito.verify;
 		 ticketService.purchaseTickets(1L, adultTicket, childTicket);
 		 verify(ticketPaymentService).makePayment(1L, 95);
 	 }
-	
+	 
+	 //More coverage tests
+	 @Test
+	 void testInfantTicketDoesNotAffectPaymentOrSeats() {
+		 ticketService.purchaseTickets(1L, adultTicket, infantTicket);
+		 
+		 verify(ticketPaymentService).makePayment(1L, 50);
+		 verify(seatReservationService).reserveSeat(1L, 2);
+	 }
+	 
+	 @Test
+	 void testEmptyTicketRequestThrowsException() {
+		 assertThrows(InvalidPurchaseException.class, () -> {
+			 ticketService.purchaseTickets(1L);
+		 });
+	 }
+	 
+	 @Test
+	 void testMixedTicketsPurchase() {
+		 ticketService.purchaseTickets(1L, adultTicket, childTicket, infantTicket);
+		 
+		 verify(ticketPaymentService).makePayment(1L, 95);
+		 verify(seatReservationService).reserveSeat(1L, 5);
+	 }
+	 
+	 @Test
+	 void testPurchaseWithExactly25Tickets() {
+		 TicketTypeRequest adultTicket20 = new TicketTypeRequest(TicketTypeRequest.Type.ADULT, 20);
+		 TicketTypeRequest childTicket5 = new TicketTypeRequest(TicketTypeRequest.Type.CHILD, 5);
+		 
+		 ticketService.purchaseTickets(1L, adultTicket20, childTicket5);
+		 
+		 verify(ticketPaymentService).makePayment(1L, 575);
+		 verify(seatReservationService).reserveSeat(1L, 25);
+	 }
  }
